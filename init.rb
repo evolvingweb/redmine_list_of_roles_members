@@ -15,16 +15,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 require 'redmine'
-Rails.configuration.to_prepare do
-    require 'roles_controller_patch'
-end
+
+# Tell Zeitwerk to ignore this plugin's lib directory
+plugin_lib = File.join(File.dirname(__FILE__), 'lib')
+Rails.autoloaders.each { |loader| loader.ignore(plugin_lib) }
+
+# Require plugin files
+require File.join(plugin_lib, 'roles_controller_patch')
+
 Redmine::Plugin.register :redmine_list_of_roles_members do
-
-    name 'Redmine List of Roles Members'
-    author 'Savoir-faire Linux'
-    description 'Show a list of all the members of a role grouped by project.'
-    version '0.1.1'
-    url 'https://github.com/savoirfairelinux/redmine-list-of-roles-members'
-    author_url 'https://www.savoirfairelinux.com'
-
+  name 'Redmine List of Roles Members'
+  author 'Savoir-faire Linux'
+  description 'Show a list of all the members of a role grouped by project.'
+  version '6.0.0'
+  url 'https://github.com/savoirfairelinux/redmine-list-of-roles-members'
+  author_url 'https://www.savoirfairelinux.com'
 end
