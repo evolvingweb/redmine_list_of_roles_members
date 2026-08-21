@@ -29,5 +29,3 @@ module RolesControllerPatch
 
 	end
 end
-
-RolesController.send :include, RolesControllerPatch

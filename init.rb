@@ -16,18 +16,18 @@
 #
 require 'redmine'
 
-# Tell Zeitwerk to ignore this plugin's lib directory
-plugin_lib = File.join(File.dirname(__FILE__), 'lib')
-Rails.autoloaders.each { |loader| loader.ignore(plugin_lib) }
-
-# Require plugin files
-require File.join(plugin_lib, 'roles_controller_patch')
-
 Redmine::Plugin.register :redmine_list_of_roles_members do
   name 'Redmine List of Roles Members'
   author 'Savoir-faire Linux'
   description 'Show a list of all the members of a role grouped by project.'
-  version '6.0.0'
+  version '7.0.0'
+  requires_redmine version_or_higher: '7.0.0'
   url 'https://github.com/savoirfairelinux/redmine-list-of-roles-members'
   author_url 'https://www.savoirfairelinux.com'
+end
+
+# R7: apply the patch DIRECTLY (RolesControllerPatch autoloads via Zeitwerk; the
+# module no longer self-applies). refs #108530.
+unless RolesController.included_modules.include?(RolesControllerPatch)
+  RolesController.include(RolesControllerPatch)
 end
